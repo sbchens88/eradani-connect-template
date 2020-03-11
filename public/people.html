@@ -1,0 +1,171 @@
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#get-people').click(function() {
+                $.ajax({
+                    url: '/api/sql/people?minBaldue=' + encodeURIComponent($('#min-baldue').val()) + '&maxBaldue=' + encodeURIComponent($('#max-baldue').val()),
+                    method: 'GET'
+                })
+                .done(function(result) {
+                    if (Array.isArray(result[0])) { result = result[0] };
+                    $('#people-list').html(peopleHTML(result));
+                });
+            });
+        });
+
+        function peopleHTML(people) {
+            let html = "";
+
+            for (let person of people) {
+                html += `<div class="person"><p class="name">Name: ${person.LSTNAM + person.INIT}</p><p class="age">Balance Due: ${person.BALDUE}</p></div>`;
+            }
+
+            return html || '<p>No People found</p>';
+        }
+    </script>
+    <style>
+        * {
+            font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
+        }
+
+        html,
+        body {
+            margin: 0;
+            border: none;
+            padding: 0;
+            background-color: #EEE;
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            min-height: 40px;
+            background-color: white;
+            border-bottom: 1px solid #AAA;
+            font-size: 30px;
+            box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            padding: 10px;
+        }
+
+        .header-link {
+            color: #65b891;
+            text-decoration: unset;
+            font-size: 18px;
+            position: absolute;
+            left: 10px;
+            top: 15px;
+            display: block;
+            border-radius: 3px;
+            padding: 5px;
+        }
+
+        .header-link:last-child {
+            left: 115px;
+        }
+
+        .header-link.selected {
+            color: white;
+            background-color: #65b891;
+        }
+
+        .container {
+            text-align: center;
+            padding-top: 220px;
+        }
+
+        .number-display {
+            display: inline-block;
+            margin: 0 20px;
+        }
+
+        .number-display input {
+            width: 140px;
+            height: 120px;
+            padding: 0 20px;
+            font-size: 40px;
+            background-color: #DDD;
+            border: 1px solid #AAA;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .number-display label {
+            display: block;
+            font-size: 16px;
+            margin-top: 10px;
+            color: #333;
+        }
+
+        button#get-people {
+            display: inline-block;
+            background-color: #65b891;
+            color: #EEE;
+            font-size: 20px;
+            text-align: center;
+            margin: 20px;
+            border-radius: 3px;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            position: relative;
+            bottom: 75px;
+        }
+
+        #people-list {
+            display: block;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .person {
+            display: block;
+            clear: both;
+            border: 1px solid #AAA;
+            border-radius: 10px;
+            padding: 20px;
+            width: 300px;
+            max-width: 100%;
+            margin: 0 auto;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 500px) {
+            button#get-people {
+                bottom: 0;
+            }
+
+            .number-display {
+                display: block;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        Find Customers By Balance Due
+        <a href="/api/sql/people/ui" class="header-link selected">SQL Demo</a>
+        <a href="/api/rpg/linux-calc/ui" class="header-link">RPG Demo</a>
+    </header>
+    <div class="container">
+        <div class="number-display" id="min-baldue-display">
+            <input type="text" name="min-baldue" id="min-baldue" maxlength="4"/>
+            <label for="min-baldue">Min Baldue</label>
+        </div>
+        <div class="number-display" id="max-baldue-display">
+            <input type="text" name="max-baldue" id="max-baldue" maxlength="4"/>
+            <label for="max-baldue">Max Baldue</label>
+        </div>
+        <button id="get-people">Get People</button>
+        <div id="people-list"></div>
+    </div>
+</body>
+
+</html>

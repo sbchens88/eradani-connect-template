@@ -1,0 +1,140 @@
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#calculate').click(function() {
+                $.ajax({
+                    url: '/api/rpg/linux-calc/' + $('#ibmicores').val(),
+                    method: 'GET'
+                })
+                .done(function(result) {
+                    $('#linuxservers').val(result.LINUXSERVERS);
+                });
+            });
+        });
+    </script>
+    <style>
+        * {
+            font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
+        }
+
+        html,
+        body {
+            margin: 0;
+            border: none;
+            padding: 0;
+            background-color: #EEE;
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            min-height: 40px;
+            background-color: white;
+            border-bottom: 1px solid #AAA;
+            font-size: 30px;
+            box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            padding: 10px;
+        }
+
+        .header-link {
+            color: #65b891;
+            text-decoration: unset;
+            font-size: 18px;
+            position: absolute;
+            left: 10px;
+            top: 15px;
+            display: block;
+            border-radius: 3px;
+            padding: 5px;
+        }
+
+        .header-link:last-child {
+            left: 115px;
+        }
+
+        .header-link.selected {
+            color: white;
+            background-color: #65b891;
+        }
+
+        .container {
+            text-align: center;
+            padding-top: 220px;
+        }
+
+        .number-display {
+            display: inline-block;
+            margin: 0 20px;
+        }
+
+        .number-display input {
+            width: 120px;
+            height: 120px;
+            padding: 0 20px;
+            font-size: 40px;
+            background-color: #DDD;
+            border: 1px solid #AAA;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .number-display label {
+            display: block;
+            font-size: 16px;
+            margin-top: 10px;
+            color: #333;
+        }
+
+        button#calculate {
+            display: inline-block;
+            background-color: #65b891;
+            color: #EEE;
+            font-size: 20px;
+            text-align: center;
+            margin: 20px;
+            border-radius: 3px;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            position: relative;
+            bottom: 75px;
+        }
+
+        @media (max-width: 500px) {
+            button#calculate {
+                bottom: 0;
+            }
+
+            .number-display {
+                display: block;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>How Many Servers Do You Need?
+        <a href="/api/sql/people/ui" class="header-link">SQL Demo</a>
+        <a href="/api/rpg/linux-calc/ui" class="header-link selected">RPG Demo</a>
+    </header>
+    <div class="container">
+        <div class="number-display" id="ibmi">
+            <input type="text" name="ibmicores" id="ibmicores" />
+            <label for="ibmicores">IBM i Cores</label>
+        </div>
+        <button id="calculate">Calculate</button>
+        <div class="number-display" id="linux">
+            <input type="text" name="linuxservers" id="linuxservers" disabled />
+            <label for="linuxservers">Linux Servers</label>
+        </div>
+    </div>
+</body>
+
+</html>
