@@ -7,7 +7,7 @@
     "setup": "npm run install-deps && npm run build && npm run reset-git && npm install && npm run generate-config",
     "start": "node src/app.js",
     "test": "mocha ./tests",
-    "install-deps": "yum group install \"Development Tools\" -y && yum install git make-gnu unzip nodejs10 unixODBC unixODBC-devel -y && npm install -g pm2 && (ln -s /QOpenSys/pkgs/lib/nodejs10/bin/pm2 /QOpenSys/pkgs/bin/pm2 || echo \"PM2 already set up\")",
+    "install-deps": "yum group install \"Development Tools\" -y && yum install git make-gnu unzip nodejs12 unixODBC unixODBC-devel -y && npm install -g pm2 && (ln -s /QOpenSys/pkgs/lib/nodejs12/bin/pm2 /QOpenSys/pkgs/bin/pm2 || echo \"PM2 already set up\")",
     "build": "export LIB=TEMPLATE && cd native && gmake init && gmake clean && gmake && cd ..",
     "update-native": "git pull && npm run build",
     "generate-config": "cd config && ssh-keygen -t rsa -f ./keys/jwt-private.key -N \"\" && mv ./keys/jwt-private.key.pub ./keys/jwt-public.key && cp development.json.sample development.json && cp development.json production.json && echo {} > testing.json && cd .. && echo \"===== Base Config Generated, edit config/development.json to change system settings =====\"",
