@@ -2,7 +2,7 @@
 
 libdir = /qsys.lib/$(LIB).lib
 
-PGMS = $(libdir)/HELLO.PGM \
+PGMS = $(libdir)/SIMPLECALC.PGM \
        $(libdir)/LINUX_CALC.PGM
 
 rootdir = $(shell pwd)
@@ -19,9 +19,9 @@ all: $(PGMS)
 
 # Programs
 
-$(libdir)/HELLO.PGM: hello.rpgle
-	system "CHGATR OBJ('$(rootdir)/hello.rpgle') ATR(*CCSID) VALUE(819)"
-	system "CRTBNDRPG PGM($(LIB)/HELLO) SRCSTMF('$<')"
+$(libdir)/SIMPLECALC.PGM: simplecalc.rpgle
+	system "CHGATR OBJ('$(rootdir)/simplecalc.rpgle') ATR(*CCSID) VALUE(819)"
+	system "CRTBNDRPG PGM($(LIB)/SIMPLECALC) SRCSTMF('$<')"
 
 $(libdir)/LINUX_CALC.PGM: linux_calc.rpgle
 	system "CHGATR OBJ('$(rootdir)/linux_calc.rpgle') ATR(*CCSID) VALUE(819)"
@@ -33,5 +33,5 @@ init:
 
 .PHONY: clean
 clean:
-	-system "DLTPGM PGM($(LIB)/HELLO)"
+	-system "DLTPGM PGM($(LIB)/SIMPLECALC)"
 	-system "DLTPGM PGM($(LIB)/LINUX_CALC)"
