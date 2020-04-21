@@ -1,7 +1,7 @@
 const eradaniConnect = require('@eradani-inc/eradani-connect');
 
 module.exports = new eradaniConnect.run.Pgm('LINUX_CALC', {
-    lib: 'ECNCTDEMO',
+    lib: 'TEMPLATE',
     mode: 'ile',
     params: [{
         name: 'IBMICORES',
