@@ -9,12 +9,6 @@
         "expiresIn": "1h"
     },
 
-    "db": {
-        "name": "boilerplate",
-        "username": "user1234",
-        "password": "p@55w0rd"
-    },
-
     "password": {
         "saltRounds": 8
     },
@@ -24,11 +18,14 @@
     "eradaniConnect": {
         "connectionPath": {
             "host": "localhost",
-            "port": 57700,
-            "path": "/cgi-bin/xmlcgi.pgm"
+            "port": 47700,
+            "path": "/cgi-bin/xmlcgi.pgm",
+            "debug": true
         },
-        "username": "demo1234",
-        "password": "demodemo"
+        "username": "usrprf",
+        "password": "passwd",
+        "odbc": "DSN=*LOCAL",
+        "idb": "*LOCAL"
     },
 
     "credentials": {
