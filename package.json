@@ -11,7 +11,7 @@
     "build": "export LIB=TEMPLATE && cd native && gmake init && gmake clean && gmake && cd ..",
     "update-native": "git pull && npm run build",
     "generate-config": "cd config && ssh-keygen -t rsa -f ./keys/jwt-private.key -N \"\" && mv ./keys/jwt-private.key.pub ./keys/jwt-public.key && cp development.json.sample development.json && cp development.json production.json && echo {} > testing.json && cd .. && echo \"===== Base Config Generated, edit config/development.json to change system settings =====\"",
-    "reset-git": "git remote remove origin && echo \"===== Disconnected from template GitHub Repo. You should connect to your own with [git remote add origin <url>] =====\""
+    "reset-git": "(git remote remove origin || echo \"No remote git repo connected\") && echo \"===== Disconnected from template GitHub Repo. You should connect to your own with [git remote add origin <url>] =====\""
   },
   "repository": {
     "type": "git",
