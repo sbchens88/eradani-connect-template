@@ -1,16 +1,18 @@
 module.exports = {
   apps: [{
-    name: 'eradani-connect-test',
+    name: 'eradani-connect-template',
     script: 'src/app.js',
 
     // Options reference: https://pm2.keymetrics.io/docs/usage/application-declaration/
     instances: 1,
     autorestart: false,
     env: {
-      NODE_ENV: 'development'
+      NODE_ENV: 'development',
+      APP_ENV: 'development'
     },
     env_production: {
-      NODE_ENV: 'production'
+      NODE_ENV: 'production',
+      APP_ENV: 'production'
     }
   }],
 
