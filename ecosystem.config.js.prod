@@ -4,8 +4,10 @@ module.exports = {
     script: 'src/app.js',
 
     // Options reference: https://pm2.keymetrics.io/docs/usage/application-declaration/
-    instances: 1,
-    autorestart: false,
+    instances: 'max',
+    exec_mode: 'cluster',
+    autorestart: true,
+    restart_delay: 5000,
     env: {
       NODE_ENV: 'development',
       APP_ENV: 'development'
