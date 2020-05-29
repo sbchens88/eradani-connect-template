@@ -1,6 +1,6 @@
 #!/bin/sh
 NODE_HOME=/QOpenSys/pkgs/bin
-ECNCT_HOME=/home/demo/eradani-connect-server
+ECNCT_HOME=/opt/eradani/eradani-connect-template
 
 NODE_ENV=production
 export NODE_ENV

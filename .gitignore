@@ -6,3 +6,8 @@ jsconfig.json
 config/keys/jwt*
 config/*.json
 EC2/**
+dist/**
+.nyc_output/**
+.coverage/**
+docs/**
+.DS_Store

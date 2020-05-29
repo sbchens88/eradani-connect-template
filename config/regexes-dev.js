@@ -1,5 +1,5 @@
 module.exports = {
-    token: /^.{1,16}$/,
-    phoneNumber: /^(\+\d+)?\s?(\(?\d{3}\)?)?(-|\s|\.)?\d{3}(-|\s|\.)?\d{4}$/,
-    password: /^.{8,}$/
+    password: /^.{2,}$/,
+    stringNotEmpty: /[^ ]/,
+    date: /^\d{4}-\d{2}-\d{2}$/
 };

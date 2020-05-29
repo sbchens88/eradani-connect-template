@@ -9,34 +9,31 @@
         "expiresIn": "1h"
     },
 
-    "db": {
-        "name": "boilerplate",
-        "username": "user1234",
-        "password": "p@55w0rd"
-    },
-
-    "password": {
-        "saltRounds": 8
-    },
-
     "protectedFields": ["password", "username"],
-
-    "eradaniConnect": {
-        "connectionPath": {
-            "host": "localhost",
-            "port": 57700,
-            "path": "/cgi-bin/xmlcgi.pgm"
-        },
-        "username": "demo1234",
-        "password": "demodemo"
-    },
-
-    "credentials": {
-        "username": "demo1234",
-        "password": "demodemo"
-    },
 
     "logger": {
         "maxLoggingLevel": "silly"
+    },
+
+    "eradaniConnect": {
+        "xml": {
+            "host": "localhost",
+            "port": 47700,
+            "path": "/cgi-bin/xmlcgi.pgm",
+            "usePOST": true,
+            "debug": true
+        },
+        "odbc": "DSN=*LOCAL",
+        "credentials": {
+            "username": "demo1234",
+            "password": "demodemo"
+        },
+        "native": {
+            
+        }
+    },
+
+    "defaults": {
+        
     }
 }

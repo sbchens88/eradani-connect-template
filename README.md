@@ -1,8 +1,51 @@
-# Eradani Connect Template
+# Template API
 
-This server provides a template API, using Eradani Connect to access the required IBM i resources. 
+This server provides a Template API, using Eradani Connect to access the required IBM i resources. 
 
 ## Features
+
+This application is a production-ready TypeScript/Express webserver preconfigured with several helpful programming tools:
+
+- [TypeScript](#typescript)
+- [Automatic Code Formatting with Prettier](#automatic-code-formatting-with-prettier)
+- [Code Linting with ESLint](#code-linting-with-eslint)
+- [Automatic Documentation with TypeDoc](#automatic-documentation-with-typedoc)
+- [Automated Testing with Mocha and Chai](#automated-testing-with-mocha-and-chai)
+- [Process Management with PM2](#process-management-with-pm2)
+- [Development Management Scripts](#development-management-scripts)
+
+### TypeScript
+
+JavaScript is a loosely-typed programming language. That means that there are no compile-time restrictions on data types whatsoever. On small projects, this is a powerful asset in JavaScript's corner; developers are able to save the significant amounts of time required to develop and synchronize the data types used throughout their applications. However, on larger projects this can become an issue, as one developer has no assurances that they are using another developer's code interfaces correctly. As a result, hard-to-find bugs often arise in normal JavaScript applications.
+
+TypeScript is a superset of JavaScript which encompases all of the features of normal JavaScript but also provides strict compile-time type-checking. When developers incorrectly configure a data structure in TypeScript, a compilation error is generated before the code is run.
+
+You can run the TypeScript compiler using the `npm run build:dev` or `npm run build:release` commands.
+
+### Automatic Code Formatting with Prettier
+
+On larger teams, it is valuable to have all code in an application written using the same style standards. This helps developers easily read each other's code, since they all code in the same style.
+
+Prettier is an automatic code formatting tool. Before a developer's code is compiled, Prettier will process the code and format it based on the standards set in your project's `.prettierrc` file. This means that developers can code in their own styles, and the entire codebase will still be automatically transformed to meet the style guidelines you set!
+
+You can run Prettier using the `npm run format` command.
+
+### Code Linting with ESLint
+
+In the same vein as Prettier, ESLint helps ensure more detailed coding standards are met by developers on your team.
+
+ESLint is the industry-standard among JavaScript developers for code-linting. Before the code is compiled, ESLint will check to make sure the new code conforms to the standards you configure in the project's `.eslintrc.js` file. If any standards are violated, a compilation error will be generated and the build process will be stopped. ESLint is included alongside Prettier because it provides more detailed checking options.
+
+You can run ESLint using the `npm run lint` command.
+
+### Automatic Documentation with TypeDoc
+
+When a developer needs to work with a part of the application they didn't build, a centralized documentation system is extremely valuable. Instead of having to ask another developer how their code works or read the source code, the relevant information is presented in an easily-digestible web-based format.
+
+TypeDoc will take your TypeScript source code and automatically generate web documentation for your entire application based only on source code and comments. To add additional notes to the documentation, you can add standard JSDoc comments to your code, and they will be parsed and included in the generated documentation pages.
+
+You can run TypeDoc using the `npm run docs` command.
+You can then view your generated docs using the `npm run view-docs` command.
 
 ### Automated Testing with Mocha and Chai
 
@@ -19,6 +62,14 @@ While Node.js applications can be run using the `node` command, there are a few 
 PM2 is a process manager for Node.js applications. PM2's features include automatically restarting your Node.js application on failure, and simple integration with Node.js's `cluster` mode. In Node.js, your business logic is run in a single thread. When you run your application in `cluster` mode via PM2, your Node.js application will be replicated once for each CPU core on your machine. PM2 will also automatically load-balance between these processes, ensuring you get maximum performance out of your Node.js application. This project comes pre-configured with a PM2 configuration file so that you can run your application in cluster mode easily with `pm2 start`.
 
 You can start the application using the `npm run start` command.
+
+### Development Management Scripts
+
+As you develop your Node.js application, it is important that your build process and integration pipeline are followed by developers. That is, when code is developed, it should be formatted, linted, compiled, tested, and documented. These steps can be difficult to manage manually, so this application comes with several development scripts to help your team.
+
+These scripts are configured in the `package.json` file. The most important script is the `package:dev` script, run in your terminal with `npm run package:dev`. This script runs through the entire series of scripts in the pipeline so that your developers can focus on developing code, and automate the rest. Check out the `scripts` section of the `package.json` file to see the other available scripts!
+
+The `npm run package:dev` command will run all of the scripts in the previous sections in sequence.
 
 ## Configuration
 
@@ -112,7 +163,7 @@ First, open an SSH session (PuTTY) into the PASE environment on your IBM i.
 
 Once there, move to the directory where the application source code resides:
 ```sh
-$ cd /opt/eradani/template-application
+$ cd /opt/eradani/eradani-connect-template
 ```
 
 Then, tell Git to pull down the latest code from the cloud-hosted repository:
@@ -126,11 +177,11 @@ Once the command finishes, the code on the server will be updated.
 
 ### Updating the application's configuration files
 
-All of the application's configuration files are available on your IBM i at `/opt/eradani/template-application/config`. By default, configuration files are automatically ignored by Git because they often include sensitive data such as API keys and passwords. So, if you have made changes to the configuration files in your development environment, you will also need to change them directly on the IBM i to make them match.
+All of the application's configuration files are available on your IBM i at `/opt/eradani/eradani-connect-template/config`. By default, configuration files are automatically ignored by Git because they often include sensitive data such as API keys and passwords. So, if you have made changes to the configuration files in your development environment, you will also need to change them directly on the IBM i to make them match.
 
 The main configuration file is `development.json`. You can edit it with the following command:
 ```sh
-nano /opt/eradani-template-application/config/development.json
+nano /opt/eradani-connect-template/config/development.json
 ```
 
 Once you make your changes and save the file, you're done with this section!
@@ -159,7 +210,7 @@ This application is managed by an open-source tool called PM2. PM2 is a Process 
 
 To perform a zero-downtime reload of the application, use the following command:
 ```sh
-$ pm2 reload template-application
+$ pm2 reload eradani-connect-template
 ```
 
 We recommend checking the application logs to make sure it restarts successfully. You can do that with the following command:

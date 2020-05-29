@@ -11,7 +11,7 @@ prod.regexes = require('./regexes-prod');
  * current environment is specified by the APP_ENV environment variable. This
  * method also optionally applies special testing configuration values to the
  * retrieved configuration if the APP_TESTING variable is set to 'true'.
- * 
+ *
  * @return {Object} The current configuration.
  */
 function get() {
