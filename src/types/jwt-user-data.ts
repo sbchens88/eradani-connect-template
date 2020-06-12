@@ -3,8 +3,4 @@
  */
 export interface JWTUserData {
     username: string;
-    validUser: boolean;
-    coicd: string;
-    masterAgent: string;
-    agentNumber: string;
 }
