@@ -1,6 +1,6 @@
 {
     "name": "eradani-connect-template",
-    "version": "2.1.0",
+    "version": "2.2.0",
     "description": "Eradani Connect Template Application",
     "main": "dist/src/app.js",
     "scripts": {
@@ -38,7 +38,7 @@
     "author": "Eradani",
     "homepage": "https://github.com/eradani-inc/eradani-connect-template#readme",
     "dependencies": {
-        "@eradani-inc/eradani-connect": "^2.1.4",
+        "@eradani-inc/eradani-connect": "^2.2.0",
         "@types/express": "^4.17.2",
         "@types/express-validator": "^3.0.0",
         "@types/safe-json-stringify": "^1.1.0",
