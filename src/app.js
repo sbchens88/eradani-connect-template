@@ -5,12 +5,15 @@ const config = require('../config').get();
 const logger = require('./services/logger');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
+let commandClient;
 // const socketIO = require('socket.io');
 
 const startup = new Promise(resolve => {
     resolve(setUpAPI());
 }).then(() => {
     return startServer();
+}).then(() => {
+    return startCommandClient();
 }).catch(err => {
     console.log("ERROR ON STARTUP: ", err);
 });
@@ -72,6 +75,14 @@ function setUpAPI() {
     const router = express.Router();
     routes(router);
     app.use('/', router);
+}
+
+function startCommandClient() {
+    commandClient = require('./services/command');
+
+    const icndbapi = require('./interfaces/icndbapi.js');
+    const icndb = require('./controllers/icndb');
+    commandClient.register('getjoke', icndbapi, icndb.getJoke);
 }
 
 module.exports = {
