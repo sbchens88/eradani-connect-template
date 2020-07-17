@@ -25,7 +25,12 @@
         "username": "usrprf",
         "password": "passwd",
         "odbc": "DSN=*LOCAL",
-        "idb": "*LOCAL"
+        "idb": "*LOCAL",
+        "dataqueue": {
+            "library": "ECNCT",
+            "responseLen": 80,
+            "requestLen": 80
+        }
     },
 
     "credentials": {
@@ -35,11 +40,5 @@
 
     "logger": {
         "maxLoggingLevel": "silly"
-    },
-    
-    "dataqueue": {
-      "library": "ECNCT",
-      "responseLen": 80,
-      "requestLen": 80
     }
 }
