@@ -1,3 +1,5 @@
+const logger = require("./logger");
+const config = require('../../config').get().eradaniConnect;
 const _commands = {};
 
 function register(name, interface, func) {
@@ -24,8 +26,7 @@ const xml = (function () {
     const service = {};
     /* eslint-disable new-cap */
     const xt = require("itoolkit");
-    const config = require('../../config').get();
-    const xml = Object.assign({}, config.eradaniConnect.xml, config.eradaniConnect.credentials);
+    const xml = Object.assign({}, config.xml, config.credentials);
 
     const xtoptions = {
         host: xml.host,
@@ -153,10 +154,9 @@ const dataqueue = (function () {
         ProgramCall,
         xmlToJson
     } = require("itoolkit");
-    const logger = require("./logger");
     const {
         library
-    } = require("../../config").get().eradaniConnect.dataqueue;
+    } = config.dataqueue;
 
     // This is a copy of the function in `Toolkit`. I reimplemented it to support
     // sending to keyed data queues

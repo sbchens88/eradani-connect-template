@@ -1,3 +1,10 @@
+const axios = require('axios');
+const icndb = {
+  "baseURL": "https://api.icndb.com",
+  "responseType": "json"
+};
+const axiosInstance = axios.create(icndb);
+
 async function getJoke(reqFields) {
     // call web service
     let result;
