@@ -35,5 +35,11 @@
 
     "logger": {
         "maxLoggingLevel": "silly"
+    },
+    
+    "dataqueue": {
+      "library": "ECNCT",
+      "responseLen": 80,
+      "requestLen": 80
     }
 }
