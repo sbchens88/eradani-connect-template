@@ -299,10 +299,10 @@ const dataqueue = (function () {
 async function sendToDataQueue(data, key) {
     let dataRemaining = data;
     let dataToSend;
-    if (dataRemaining.length > responseLen) {
+    if (dataRemaining.length > config.dataqueue.responseLen) {
       logger.debug("spanning data queue records");
-      dataToSend = data.slice(0, responseLen);
-      dataRemaining = data.slice(responseLen);
+      dataToSend = data.slice(0, config.dataqueue.responseLen);
+      dataRemaining = data.slice(config.dataqueue.responseLen);
       await dataqueue.sendToResDataQueue(false, true, dataToSend, key);
     } else {
       dataToSend = data;
