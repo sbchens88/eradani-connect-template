@@ -1,0 +1,32 @@
+---
+name: icndbapi
+formats:
+  Data:
+    recordType: request
+    length: 80
+    fields:
+      limitTo:
+        rpgName: D_Ctgry
+        length: 15
+        type: String
+  RetData:
+    recordType: response
+    length: 80
+    fields:
+      httpstatus:
+        rpgName: R_HttpSts
+        length: 3
+        type: String
+      joke:
+        rpgName: R_Joke
+        length: -1
+        type: String
+  RetData2:
+    recordType: response
+    length: 80
+    fields:
+      joke:
+        rpgName: R_Joke2
+        length: -1
+        type: String
+
