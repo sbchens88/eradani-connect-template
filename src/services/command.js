@@ -19,7 +19,10 @@ function deregister(name) {
 
 module.exports = {
     register,
-    deregister
+    deregister,
+    direct: {
+        sendToDataQueue
+    }
 };
 
 const xml = (function () {
