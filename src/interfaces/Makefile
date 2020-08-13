@@ -137,12 +137,10 @@ endif
 #
 
 icndbapi.clleinc icndbapi.rpgleinc icndbapi.js: icndbapi.yaml
-	npm run generate -- -f $<
-	cp icndbapi.js ../src/services
+	npm run generate-interface -- $<
 
 wthfrcapi.clleinc wthfrcapi.rpgleinc wthfrcapi.js: wthfrcapi.yaml
-	npm run generate -- -f $<
-	cp wthfrcapi.js ../src/services
+	npm run generate-interface -- $<
 
 
 .PHONY: library
