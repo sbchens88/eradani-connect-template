@@ -52,7 +52,7 @@ module.exports = {
 async function handleRequest(data) {
     const handler = _commands[data.command];
     if (!handler) {
-        throw new RangeError(`"${command}" is not a registered command.`);
+        throw new RangeError(`"${data.command}" is not a registered command.`);
     }
 
     try {
@@ -69,7 +69,7 @@ async function receiveDQ() {
           return true;
       }
       const result = await ecc.getNextRequest();
-      if (result.command !== "") {
+      if (result.data !== "") {
         await handleRequest(result);
       }
       return receiveDQ();
