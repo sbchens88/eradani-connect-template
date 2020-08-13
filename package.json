@@ -1,6 +1,6 @@
 {
   "name": "eradani-connect-template",
-  "version": "2.3.0",
+  "version": "2.4.0",
   "description": "Eradani Connect Starter Application",
   "main": "src/app.js",
   "scripts": {
@@ -11,7 +11,7 @@
     "update-native": "git pull && npm run build",
     "generate-config": "cd config && ssh-keygen -t rsa -f ./keys/jwt-private.key -N \"\" && mv ./keys/jwt-private.key.pub ./keys/jwt-public.key && cp development.json.sample development.json && cp development.json production.json && echo {} > testing.json && cd .. && echo \"===== Base Config Generated, edit config/development.json to change system settings =====\"",
     "install-deps": "((ls /QOpenSys && yum group install \"Development Tools\" -y && yum install git make-gnu unzip nodejs12 unixODBC unixODBC-devel -y) || echo \"Installing without Yum\") && npm install -g pm2 && (ln -s /QOpenSys/pkgs/lib/nodejs12/bin/pm2 /QOpenSys/pkgs/bin/pm2 || echo \"PM2 already set up\")",
-    "reset-git": "((rm -rf .git && git init && git add . && git commit -am \"chore(Setup): Clone Eradani JavaScript Template App v2.3.0\") || echo \"No remote git repo connected\") && echo \"===== Disconnected from template GitHub Repo. You should connect to your own with [git remote add origin <url>] =====\"",
+    "reset-git": "((rm -rf .git && git init && git add . && git commit -am \"chore(Setup): Clone Eradani JavaScript Client Template App v2.4.0\") || echo \"No remote git repo connected\") && echo \"===== Disconnected from template GitHub Repo. You should connect to your own with [git remote add origin <url>] =====\"",
     "install-client": "cd node_modules/@eradani-inc/ec-client/native && make library && make",
     "install-examples": "cd src/interfaces && make library && make",
     "generate-interface": "cd src/interfaces && node \"../../node_modules/@eradani-inc/ec-generate/bin-generate.js\" -f"
