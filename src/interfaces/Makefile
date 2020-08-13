@@ -53,7 +53,7 @@ all: $(FQPGMS) $(FQCMDS)
 # Programs
 #
 
-ecnctc.rpgleinc: ../node_modules/@eradani-inc/ec-client/native/ecnctc.rpgleinc
+ecnctc.rpgleinc: ../../node_modules/@eradani-inc/ec-client/native/ecnctc.rpgleinc
 	cp $< $@
 
 ifeq ($(TGTRLS), V7R4M0)
