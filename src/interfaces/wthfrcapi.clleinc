@@ -1,0 +1,18 @@
+/* Module wthfrcapi */
+
+/* Request fields */
+DCL &Location    *CHAR  80
+DCL &Lat         *CHAR  10 STG(*DEFINED) DEFVAR(&Location   1)
+DCL &Lon         *CHAR  10 STG(*DEFINED) DEFVAR(&Location  11)
+
+/* Response fields */
+DCL &Result      *CHAR  80
+DCL &HttpStatus  *CHAR   3 STG(*DEFINED) DEFVAR(&Result   1)
+DCL &Message     *CHAR  77 STG(*DEFINED) DEFVAR(&Result   4)
+
+/* Response fields */
+DCL &Forecast    *CHAR  80
+DCL &Date        *CHAR  10 STG(*DEFINED) DEFVAR(&Forecast   1)
+DCL &Min         *CHAR   6 STG(*DEFINED) DEFVAR(&Forecast  11)
+DCL &Max         *CHAR   6 STG(*DEFINED) DEFVAR(&Forecast  17)
+DCL &Desc        *CHAR  58 STG(*DEFINED) DEFVAR(&Forecast  23)

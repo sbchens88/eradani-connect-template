@@ -1,0 +1,23 @@
+      * Module wthfrcapi
+      *
+      * Request fields
+      *
+     D  Location       DS            80
+     D   Lat                         10A
+     D   Lon                         10A
+
+      *
+      * Response fields
+      *
+     D  Result         DS            80
+     D   HttpStatus                   3A
+     D   Message                     77A
+
+      *
+      * Response fields
+      *
+     D  Forecast       DS            80
+     D   Date                        10A
+     D   Min                          6A
+     D   Max                          6A
+     D   Desc                        58A

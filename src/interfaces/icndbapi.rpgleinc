@@ -1,0 +1,27 @@
+      * Module icndbapi
+      *
+      * Request fields
+      *
+     D  Data           DS            80
+     D   D_Ctgry                     15A
+
+      *
+      * Response fields
+      *
+     D  RetData        DS            80
+     D   R_HttpSts                    3A
+     D   R_Type                      16A
+     D   R_Value                     61A
+
+      *
+      * Response fields
+      *
+     D  RetData2       DS            80
+     D   R2_Joke                     80A
+
+      *
+      * Response fields
+      *
+     D  RetData3       DS            80
+     D   R3_HttpSts                   3A
+     D   R3_Error                    77A

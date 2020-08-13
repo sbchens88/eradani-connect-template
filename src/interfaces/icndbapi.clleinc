@@ -1,0 +1,20 @@
+/* Module icndbapi */
+
+/* Request fields */
+DCL &Data        *CHAR  80
+DCL &D_Ctgry     *CHAR  15 STG(*DEFINED) DEFVAR(&Data   1)
+
+/* Response fields */
+DCL &RetData     *CHAR  80
+DCL &R_HttpSts   *CHAR   3 STG(*DEFINED) DEFVAR(&RetData   1)
+DCL &R_Type      *CHAR  16 STG(*DEFINED) DEFVAR(&RetData   4)
+DCL &R_Value     *CHAR  61 STG(*DEFINED) DEFVAR(&RetData  20)
+
+/* Response fields */
+DCL &RetData2    *CHAR  80
+DCL &R2_Joke     *CHAR  80 STG(*DEFINED) DEFVAR(&RetData2   1)
+
+/* Response fields */
+DCL &RetData3    *CHAR  80
+DCL &R3_HttpSts  *CHAR   3 STG(*DEFINED) DEFVAR(&RetData3   1)
+DCL &R3_Error    *CHAR  77 STG(*DEFINED) DEFVAR(&RetData3   4)

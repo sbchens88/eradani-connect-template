@@ -16,9 +16,13 @@ formats:
       httpstatus:
         rpgName: R_HttpSts
         length: 3
+        type: Number
+      type:
+        rpgName: R_Type
+        length: 16
         type: String
-      joke:
-        rpgName: R_Joke
+      value:
+        rpgName: R_Value
         length: -1
         type: String
   RetData2:
@@ -26,7 +30,19 @@ formats:
     length: 80
     fields:
       joke:
-        rpgName: R_Joke2
+        rpgName: R2_Joke
+        length: -1
+        type: String
+  RetData3:
+    recordType: response
+    length: 80
+    fields:
+      httpstatus:
+        rpgName: R3_HttpSts
+        length: 3
+        type: Number
+      error:
+        rpgName: R3_Error
         length: -1
         type: String
 

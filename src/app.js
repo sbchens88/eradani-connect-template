@@ -81,8 +81,14 @@ function startCommandClient() {
     commandClient = require('./services/command');
 
     const icndbapi = require('./interfaces/icndbapi.js');
-    const icndb = require('./controllers/icndb');
+    const icndb = require('./services/icndb');
     commandClient.register('getjoke', icndbapi, icndb.getJoke);
+
+    const weatherapi = require('./interfaces/wthfrcapi.js');
+    const weather = require('./services/weather');
+    commandClient.register('getweatherforecast', weatherapi, weather.getforecast);
+
+    return commandClient.listen();
 }
 
 module.exports = {
