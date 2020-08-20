@@ -69,7 +69,7 @@ async function receiveDQ() {
           return true;
       }
       const result = await ecc.getNextRequest();
-      if (result.data !== "") {
+      if (result.hasOwnProperty('command')) {
         await handleRequest(result);
       }
       return receiveDQ();
