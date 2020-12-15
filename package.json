@@ -1,6 +1,6 @@
 {
     "name": "eradani-connect-template",
-    "version": "2.2.0",
+    "version": "2.2.1",
     "description": "Eradani Connect Template Application",
     "main": "dist/src/app.js",
     "scripts": {
@@ -10,7 +10,7 @@
         "setup": "npm run reset-git && npm run install-deps && npm install && npm run generate-config && npm run package:release",
         "clean": "rm -rf dist",
         "docs": "typedoc --out docs src && printf \"\u001b[1;36mView Generated Documentation with \u001b[1;32mnpm run view-docs\u001b[0m\"",
-        "install-npm": "cd dist && rm -rf node_modules && ln -s ../node_modules node_modules && cd ..",
+        "install-npm": "cd dist && rm -rf node_modules && shx ln -s ../node_modules node_modules && cd ..",
         "install-deps": "((ls /QOpenSys && yum group install \"Development Tools\" -y && yum install git make-gnu unzip nodejs12 unixODBC unixODBC-devel -y) || echo \"Installing without Yum\") && npm install -g pm2 && (ln -s /QOpenSys/pkgs/lib/nodejs12/bin/pm2 /QOpenSys/pkgs/bin/pm2 || echo \"PM2 already set up\")",
         "reset-git": "((rm -rf .git && git init && git add . && git commit -am \"chore(Setup): Clone Eradani TypeScript Template App v2.1.0\") || echo \"No remote git repo connected\") && echo \"===== Disconnected from template GitHub Repo. You should connect to your own with [git remote add origin <url>] =====\"",
         "start-nginx": "nginx -s reload || nginx",
@@ -77,7 +77,7 @@
         "mocha": "^7.1.2",
         "npm-run-all": "^4.1.5",
         "prettier": "^1.19.1",
-        "shx": "^0.3.2",
+        "shx": "^0.3.3",
         "sinon": "^8.1.1",
         "source-map-support": "^0.5.16",
         "tslint": "^6.0.0",
