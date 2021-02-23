@@ -11,3 +11,4 @@ dist/**
 .coverage/**
 docs/**
 .DS_Store
+.npmrc
