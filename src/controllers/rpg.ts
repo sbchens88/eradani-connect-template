@@ -21,10 +21,10 @@ const transport = new eradaniConnect.transports.Xml(
  * @param {number} num The number to input to the program
  * @returns {Promise<TEMPLATEOutput}
  */
-export async function linuxCalc(num: number): Promise<TEMPLATEOutput> {
+export async function simpleCalc(num: number): Promise<TEMPLATEOutput> {
     logger.debug('Calling TEMPLATE program');
     const params: TEMPLATEInput = {
-        IBMICORES: num
+        input: num
     };
     return transport.execute(TEMPLATE, params) as Promise<TEMPLATEOutput>;
 }
