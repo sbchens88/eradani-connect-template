@@ -29,7 +29,7 @@
             "password": "demodemo"
         },
         "native": {
-            
+            "templateLib": "ECNCTAPP"
         }
     },
 
