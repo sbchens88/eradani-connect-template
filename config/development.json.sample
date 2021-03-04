@@ -25,8 +25,8 @@
         },
         "odbc": "DSN=*LOCAL",
         "credentials": {
-            "username": "demo1234",
-            "password": "demodemo"
+            "username": "ECNCT",
+            "password": "password"
         },
         "native": {
             "templateLib": "ECNCTAPP"
