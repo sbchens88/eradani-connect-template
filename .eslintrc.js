@@ -39,7 +39,7 @@ module.exports = {
         '@typescript-eslint/type-annotation-spacing': 'off',
         '@typescript-eslint/unified-signatures': 'error',
         'arrow-parens': ['off', 'as-needed'],
-        camelcase: 'error',
+        camelcase: 'warn',
         'capitalized-comments': 'error',
         curly: ['error', 'multi-line'],
         'eol-last': 'off',
