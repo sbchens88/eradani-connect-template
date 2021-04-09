@@ -16,10 +16,20 @@
  * Another setting under the "logger" config is "disableConsole". When set to
  * true, this setting will stop logs from going to the console / QPRINT.
  *
- * To construct a new logger, add the following code to the top of your JS file:
- * const logger = require('path/to/logger.js').forContext('my.custom.context');
+ * Arbitrary additional logging data can be attached to a log record with the
+ * second argument to all of the logger methods. This parameter will be
+ * serialized by the logger system. To set a depth limit on recursive object
+ * serialization, set the config value under "logger" called "maxStringifyDepth"
+ * to your desired depth. Default is 10 layers deep.
  *
- * Logs are stored in the '/logs' directory at the root of this application's
+ * To construct a new logger, add the following code to the top of your TS file:
+ * import * as loggerService from 'path/to/logger.ts';
+ * const logger = loggerService.createLogger('my.custom.context');
+ *
+ * Or, if you are using JS, add the following code to the top of your JS file:
+ * const logger = require('path/to/logger.js')('my.custom.context');
+ *
+ * Logs are stored in the 'dist/logs' directory at the root of this application's
  * source code, and are named by their creation dates in the following format:
  * YYYY-MM-DD.log
  *
