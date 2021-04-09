@@ -50,17 +50,35 @@ function _stringify(data: any, depth: number = 0): string {
         if (depth > (config.logger.maxStringifyDepth || 10)) {
             return '' + data;
         }
-        if (data instanceof Error) {
-            return `${data.stack} ${
-                (data as any).additionalData
-                    ? _stringify((data as any).additionalData, depth + 1)
-                    : (data as any).context
-                    ? _stringify((data as any).context, depth + 1)
-                    : ''
-            }`;
+
+        let obj = data;
+        if (data && typeof data === 'object') {
+            obj = Object.assign({}, data);
+
+            if (data.stack) {
+                obj.stack = data.stack;
+            }
+            if (data.message) {
+                obj.message = data.message;
+            }
+            if (data.additionalData) {
+                obj.additionalData = _stringify(data.additionalData, depth + 1);
+            }
+            if (data.context) {
+                obj.context = _stringify(data.context, depth + 1);
+            }
+            if (data.fullError) {
+                obj.fullError = _stringify(data.fullError, depth + 1);
+            }
         } else {
-            return safeJSONStringify(data);
+            return obj;
         }
+
+        if (depth !== 0) {
+            return obj;
+        }
+
+        return safeJSONStringify(obj);
     } catch (e) {
         return '' + data;
     }
