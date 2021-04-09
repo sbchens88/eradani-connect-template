@@ -12,7 +12,7 @@
         "setup": "npm run install-shx && npm run link-keys && npm run reset-git && npm run create-user && npm run create-objects && npm run install-deps && npm install && npm run generate-config && npm run package:release && npm run update-eol && npm run set-permissions",
         "clean": "shx rm -rf dist",
         "docs": "shx echo $OSTYPE | shx grep os400 || (typedoc --out docs src && printf \"\u001b[1;36mView Generated Documentation with \u001b[1;32mnpm run view-docs\u001b[0m\")",
-        "install-shx": "npm install -g shx || echo \"Failed to install shx\"",
+        "install-shx": "npm install -g shx && npx shx ln -s /QOpenSys/pkgs/lib/nodejs14/bin/shx /QOpenSys/pkgs/bin/shx || echo \"Failed to install shx\"",
         "install-npm": "cd dist && shx rm -rf node_modules && shx ln -s ../node_modules node_modules && cd ..",
         "install-deps": "((shx echo $OSTYPE | shx grep os400 && yum group install \"Development Tools\" -y && yum install git make-gnu unzip nodejs14 unixODBC unixODBC-devel -y) || shx echo \"Installing without Yum\") && (shx which pm2 || (npm install -g pm2 && shx ln -s /QOpenSys/pkgs/lib/nodejs14/bin/pm2 /QOpenSys/pkgs/bin/pm2) || shx echo \"PM2 already set up\")",
         "reset-git": "((shx rm -rf .git && git init && git add . && git commit -am \"chore(Setup): Clone Eradani TypeScript Template App v2.1.0\") || shx echo \"No remote git repo connected\") && shx echo \"===== Disconnected from template GitHub Repo. You should connect to your own with [git remote add origin <url>] =====\"",
