@@ -1,11 +1,11 @@
 import http from 'http';
 import express from 'express';
-import configService from '../config';
-import * as loggerService from './services/logger';
+import configService from 'config';
+import * as loggerService from 'src/services/logger';
 import bodyParser from 'body-parser';
 import morgan from 'morgan';
-import decodeJWT from './middlewares/decode-jwt';
-import routes from './routes';
+import decodeJWT from 'src/middlewares/decode-jwt';
+import routes from 'src/routes';
 // If you want realtime services: import socketIO from 'socket.io';
 const config = configService.get();
 const app = express();

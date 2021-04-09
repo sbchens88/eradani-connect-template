@@ -85,9 +85,12 @@
         "shx": "^0.3.3",
         "sinon": "^8.1.1",
         "source-map-support": "^0.5.16",
+        "tsconfig-paths": "^3.9.0",
         "tslint": "^6.0.0",
+        "ttypescript": "^1.5.12",
         "typedoc": "^0.16.9",
-        "typescript": "^3.7.5"
+        "typescript": "^3.7.5",
+        "typescript-transform-paths": "^2.2.3"
     },
     "optionalDependencies": {
         "@eradani-inc/ec-generate": "^3.5.1"
