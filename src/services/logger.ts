@@ -1,160 +1,131 @@
-import fs from 'fs';
+/**
+ * Logging Utility
+ * Provides a standard interface for logging to a daily log file, and also
+ * logs to the console. Logs are prefixed with one of NPM's logging levels
+ * (Error, Warn, Info, Verbose, Debug, and Silly) along with a context label
+ * which you provide, such as "core.services.database", to help you locate the
+ * source of the log.
+ *
+ * There is a setting in the application config file under "logger" called
+ * "maxLoggingLevel". You can set this logging level to one of the NPM levels,
+ * and this Logger will ignore any logs beyond that level. For example, if you
+ * set the maxLoggingLevel to "warn", only "error" and "warn" level logs will
+ * be stored. "info", "verbose", "debug", and "silly" log statements will be
+ * ignored by the logger.
+ *
+ * Another setting under the "logger" config is "disableConsole". When set to
+ * true, this setting will stop logs from going to the console / QPRINT.
+ *
+ * To construct a new logger, add the following code to the top of your JS file:
+ * const logger = require('path/to/logger.js').forContext('my.custom.context');
+ *
+ * Logs are stored in the '/logs' directory at the root of this application's
+ * source code, and are named by their creation dates in the following format:
+ * YYYY-MM-DD.log
+ *
+ * For example, the log file for October 7th, 2020 would be: 2020-10-07.log
+ *
+ * Happy Logging!
+ */
+
+import winston from 'winston';
+import DailyRotateFile from 'winston-daily-rotate-file';
 import path from 'path';
 import safeJSONStringify from 'safe-json-stringify';
-import fullConfig from '../../config';
+import configService from '../../config';
+const config = configService.get();
 
-const config = fullConfig.get().logger;
-const logLevels = ['error', 'warn', 'info', 'verbose', 'debug', 'silly'];
+function _stringify(data: any, depth: number = 0): string {
+    try {
+        if (depth > (config.logger.maxStringifyDepth || 10)) {
+            return '' + data;
+        }
+        if (data instanceof Error) {
+            return `${data.stack} ${
+                (data as any).additionalData
+                    ? _stringify((data as any).additionalData, depth + 1)
+                    : (data as any).context
+                    ? _stringify((data as any).context, depth + 1)
+                    : ''
+            }`;
+        } else {
+            return safeJSONStringify(data);
+        }
+    } catch (e) {
+        return '' + data;
+    }
+}
 
-/* ==================== *\
-    INTERNAL  LOGGER
-\* ==================== */
+function _clean(str: string) {
+    return str.replace(/[\r\n]/g, '');
+}
 
-const internalLogger = fs.createWriteStream(
-    path.join(
-        __dirname,
-        `../../logs/${new Date()
-            .toISOString()
-            .split('T')[0]
-            .replace(/:/g, '-')}.log`
-    ),
-    { flags: 'a', autoClose: false }
+const formatter = winston.format.combine(
+    winston.format.metadata({ fillExcept: ['message', 'level', 'timestamp', 'label', 'context'] }),
+    winston.format.printf((options: any) => {
+        let logString =
+            '' +
+            `[${options.level.toUpperCase()}]`.padEnd(10, ' ') +
+            `(${new Date().toISOString()})` +
+            ` -- ${options.context} -- ${_clean(options.message)} -- ${_stringify(options.metadata)}`;
+        return logString;
+    })
 );
 
-/* ==================== *\
-      LOGGER CLASS
-\* ==================== */
+const normalTransport = new DailyRotateFile({
+    filename: path.join(
+        __dirname,
+        '../../logs/' + (process.env.APP_TESTING === 'true' ? 'testing/' : ''),
+        '%DATE%.log'
+    ),
+    datePattern: 'YYYY-MM-DD',
+    json: true,
+    level: config.logger.maxLoggingLevel,
+    format: formatter
+});
 
-class Logger {
-    private contextString: string;
-    private logLevelNumber: number;
+// Only handles uncaught exceptions in the program
+const exceptionTransport = new DailyRotateFile({
+    filename: path.join(
+        __dirname,
+        '../../logs/' + (process.env.APP_TESTING === 'true' ? 'testing/' : '') + 'exceptions/',
+        '%DATE%.exceptions'
+    ),
+    datePattern: 'YYYY-MM-DD',
+    handleExceptions: true,
+    json: true,
+    level: config.logger.maxLoggingLevel,
+    format: formatter
+});
 
-    constructor(contextString: string, maxLoggingLevel: string) {
-        this.contextString = contextString;
-        this.logLevelNumber = logLevels.indexOf(maxLoggingLevel.toLowerCase());
-    }
+const consoleTransport = new winston.transports.Console({
+    level: config.logger.maxLoggingLevel,
+    format: formatter
+});
 
-    /**
-     *
-     * @param level The desired NPM logging level
-     * @param message The base message to log
-     * @param additionalData Any additional data of any kind which you would like to include in the log entry
-     */
-    log(level: string, message: string, additionalData?: any) {
-        try {
-            // Don't log anything if the log level is above our max threshold
-            if (logLevels.indexOf(level) > this.logLevelNumber) {
-                return;
-            }
+const logger = winston.createLogger({
+    transports: [normalTransport, consoleTransport],
+    exceptionHandlers: [normalTransport, consoleTransport, exceptionTransport],
+    exitOnError: false
+});
 
-            let logString = `[${level.toUpperCase()}]`;
-            logString += '          '.substring(logString.length);
-            logString += `(${this.contextString}) -- ${message}`;
-            if (additionalData) {
-                logString += ' -- Additional Data: ';
-                logString += additionalData instanceof Error ? additionalData.stack : safeJSONStringify(additionalData);
-            }
-            console.log(logString);
-            internalLogger.write(logString + '\n');
-        } catch (e) {
-            console.error('Failed to log message in logger');
-            console.error(e);
-        }
-    }
-
-    /**
-     * Write a log entry at the `error` NPM log severity level. If this level
-     * is above the `logger.maxLoggingLevel` in the application config, this
-     * function will be a no-op. For that reason, it is best if you leave as
-     * much serialization & other log prep to this logger - that way the
-     * serialization steps can be skipped based on configuration.
-     *
-     * @param message A summary message for the log file.
-     * @param additionalData Any arbitrary data you would like in the log.
-     */
-    error(message: string, additionalData?: any) {
-        this.log('error', message, additionalData);
-    }
-
-    /**
-     * Write a log entry at the `warn` NPM log severity level. If this level
-     * is above the `logger.maxLoggingLevel` in the application config, this
-     * function will be a no-op. For that reason, it is best if you leave as
-     * much serialization & other log prep to this logger - that way the
-     * serialization steps can be skipped based on configuration.
-     *
-     * @param message A summary message for the log file.
-     * @param additionalData Any arbitrary data you would like in the log.
-     */
-    warn(message: string, additionalData?: any) {
-        this.log('warn', message, additionalData);
-    }
-
-    /**
-     * Write a log entry at the `info` NPM log severity level. If this level
-     * is above the `logger.maxLoggingLevel` in the application config, this
-     * function will be a no-op. For that reason, it is best if you leave as
-     * much serialization & other log prep to this logger - that way the
-     * serialization steps can be skipped based on configuration.
-     *
-     * @param message A summary message for the log file.
-     * @param additionalData Any arbitrary data you would like in the log.
-     */
-    info(message: string, additionalData?: any) {
-        this.log('info', message, additionalData);
-    }
-
-    /**
-     * Write a log entry at the `verbose` NPM log severity level. If this level
-     * is above the `logger.maxLoggingLevel` in the application config, this
-     * function will be a no-op. For that reason, it is best if you leave as
-     * much serialization & other log prep to this logger - that way the
-     * serialization steps can be skipped based on configuration.
-     *
-     * @param message A summary message for the log file.
-     * @param additionalData Any arbitrary data you would like in the log.
-     */
-    verbose(message: string, additionalData?: any) {
-        this.log('verbose', message, additionalData);
-    }
-
-    /**
-     * Write a log entry at the `debug` NPM log severity level. If this level
-     * is above the `logger.maxLoggingLevel` in the application config, this
-     * function will be a no-op. For that reason, it is best if you leave as
-     * much serialization & other log prep to this logger - that way the
-     * serialization steps can be skipped based on configuration.
-     *
-     * @param message A summary message for the log file.
-     * @param additionalData Any arbitrary data you would like in the log.
-     */
-    debug(message: string, additionalData?: any) {
-        this.log('debug', message, additionalData);
-    }
-
-    /**
-     * Write a log entry at the `silly` NPM log severity level. If this level
-     * is above the `logger.maxLoggingLevel` in the application config, this
-     * function will be a no-op. For that reason, it is best if you leave as
-     * much serialization & other log prep to this logger - that way the
-     * serialization steps can be skipped based on configuration.
-     *
-     * @param message A summary message for the log file.
-     * @param additionalData Any arbitrary data you would like in the log.
-     */
-    silly(message: string, additionalData?: any) {
-        this.log('silly', message, additionalData);
-    }
+// Don't output to the console if we're in testing mode
+if (config.logger.disableConsole) {
+    logger.remove(consoleTransport);
 }
 
-/**
- * Create a `Logger` instance for the given context. The context string you
- * supply will be included at the beginning of every log entry generated by
- * this logger.
- *
- * @param contextString Context string such as a class or file name.
- * @param maxLoggingLevel The maximum logging level to allow. Defaults to `config.logger.maxLoggingLevel`.
- */
-export function createForContext(contextString: string, maxLoggingLevel: string = config.maxLoggingLevel): Logger {
-    return new Logger(contextString, maxLoggingLevel);
+export default function createLogger(context: string) {
+    // Set the default context of the child
+    return logger.child({ context });
 }
+
+export const createForContext = createLogger;
+
+// Logger for Morgan
+// Attach with: app.use(require("morgan")("combined", { stream: requestLogger }));
+const _requestLogger = createLogger('api-requests');
+export const requestLogger = {
+    write: function(message: string) {
+        _requestLogger.info(message);
+    }
+};

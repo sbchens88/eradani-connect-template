@@ -63,7 +63,7 @@ function startServer() {
 function setUpAPI() {
     // General middlewares
 
-    app.use(morgan('dev'));
+    app.use(morgan('dev', { stream: loggerService.requestLogger }));
     app.use(
         bodyParser.json({
             type: 'application/json'

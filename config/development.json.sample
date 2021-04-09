@@ -12,7 +12,9 @@
     "protectedFields": ["password", "username"],
 
     "logger": {
-        "maxLoggingLevel": "silly"
+        "maxLoggingLevel": "silly",
+        "disableConsole": false,
+        "maxStringifyDepth": 10
     },
 
     "eradaniConnect": {
@@ -23,13 +25,23 @@
             "usePOST": true,
             "debug": true
         },
-        "odbc": "DSN=*LOCAL",
+        "odbc": "DSN=*LOCAL;NAM=1;CCSID=1208",
+        "odbcOptions": {
+            "debug": true,
+            "noPool": false,
+            "pool": {
+                "initialSize": 10,
+                "maxSize": 10,
+                "incrementSize": 1
+            }
+        },
         "credentials": {
             "username": "ECNCT",
             "password": "password"
         },
         "native": {
-            "templateLib": "ECNCTAPP"
+            "templateLib": "ECNCTAPP",
+            "templateDataLib": "QIWS"
         }
     },
 
