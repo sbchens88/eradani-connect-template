@@ -9,7 +9,7 @@
         "start:pm2": "pm2 start",
         "stop:pm2": "pm2 stop eradani-connect-template",
         "test": "mocha ./dist/tests",
-        "setup": "npm run install-deps && npm install && npm run generate-config && npm run package:release && npm run update-eol && npm run set-permissions",
+        "setup": "npm run install-deps && npm install && npm run generate-config && npm run package:release && npm run update-eol",
         "clean": "rm -rf dist",
         "docs": "typedoc --out docs src && printf \"\u001b[1;36mView Generated Documentation with \u001b[1;32mnpm run view-docs\u001b[0m\"",
         "install-npm": "cd dist && rm -rf node_modules && shx ln -s ../node_modules node_modules && cd ..",
