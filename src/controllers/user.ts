@@ -1,5 +1,5 @@
 import * as jwt from '../services/jwt';
-import * as configService from '../../config';
+import * as configService from 'config';
 const config = configService.get();
 const credentials = config.credentials;
 import APIError from '../APIError';

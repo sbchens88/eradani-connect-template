@@ -1,6 +1,6 @@
 import { check } from 'express-validator/check';
 import { sanitize } from 'express-validator/filter';
-import configService from '../../../../config';
+import configService from 'config';
 import { InputCheckChain } from '../../types';
 const regexes = configService.get().regexes;
 

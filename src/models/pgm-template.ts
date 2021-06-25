@@ -1,6 +1,6 @@
 import eradaniConnect from '@eradani-inc/eradani-connect';
 const { PackedDecimal } = eradaniConnect.dataTypes;
-import configService from '../../config';
+import configService from 'config';
 const config = configService.get().eradaniConnect.native;
 
 export default new eradaniConnect.run.Pgm('SIMPLECALC', {

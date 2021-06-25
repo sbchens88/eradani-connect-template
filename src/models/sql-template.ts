@@ -1,5 +1,5 @@
 import eradaniConnect from '@eradani-inc/eradani-connect';
-import configService from '../../config';
+import configService from 'config';
 import { JSONObject } from 'src/types';
 const config = configService.get().eradaniConnect.native;
 

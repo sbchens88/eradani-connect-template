@@ -1,7 +1,7 @@
 import { Response } from 'express';
 import safeJSONStringify from 'safe-json-stringify';
 import * as loggerService from '../services/logger';
-import configService from '../../config';
+import configService from 'config';
 import APIError from '../APIError';
 import { RedirectResponse } from '../types';
 const protectedFields = configService.get().protectedFields;

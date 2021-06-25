@@ -1,5 +1,5 @@
 import eradaniConnect from '@eradani-inc/eradani-connect';
-import configService from '../config';
+import configService from 'config';
 const config = configService.get();
 const credentials = config.eradaniConnect.credentials;
 
