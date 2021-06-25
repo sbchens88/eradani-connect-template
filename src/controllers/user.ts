@@ -1,4 +1,4 @@
-import * as jwt from '../services/jwt';
+import * as jwt from 'src/services/jwt';
 import * as configService from 'config';
 const config = configService.get();
 const credentials = config.credentials;

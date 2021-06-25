@@ -1,7 +1,7 @@
 import http from 'http';
 import express from 'express';
 import configService from 'config';
-import * as loggerService from 'src/services/logger';
+import createLogger, { requestLogger } from 'src/services/logger';
 import bodyParser from 'body-parser';
 import morgan from 'morgan';
 import cors from 'cors';
@@ -9,7 +9,7 @@ import routes from 'src/routes';
 // If you want realtime services: import socketIO from 'socket.io';
 const config = configService.get();
 const app = express();
-const logger = loggerService.createForContext('app');
+const logger = createLogger('app');
 
 export const startup = new Promise((resolve) => {
     resolve(setUpAPI());
@@ -63,7 +63,7 @@ function startServer() {
 function setUpAPI() {
     // General middlewares
 
-    app.use(morgan('dev', { stream: loggerService.requestLogger }));
+    app.use(morgan('dev', { stream: requestLogger }));
     app.use(cors());
     app.use(
         bodyParser.json({

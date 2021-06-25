@@ -1,7 +1,7 @@
-import * as loggerService from './logger';
+import createLogger from './logger';
 import APIError from '../APIError';
 import { JSONObject, BooleanString } from '../types';
-const logger = loggerService.createForContext('controllers/extra-sanitizers');
+const logger = createLogger('controllers/extra-sanitizers');
 
 /**
  * Template for your custom sanitizers. Only use this if your data validation

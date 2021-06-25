@@ -1,8 +1,8 @@
-import * as loggerService from '../services/logger';
+import createLogger from 'src/services/logger';
 import passport from 'passport';
 import { Strategy as BearerStrategy } from 'passport-http-bearer';
-const logger = loggerService.createForContext('middlewares/require-auth');
-import * as jwt from '../services/jwt';
+const logger = createLogger('middlewares/require-auth');
+import * as jwt from 'src/services/jwt';
 
 passport.use(
     new BearerStrategy(async function (token, done) {

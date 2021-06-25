@@ -1,11 +1,11 @@
 import { Response } from 'express';
 import safeJSONStringify from 'safe-json-stringify';
-import * as loggerService from '../services/logger';
+import createLogger from 'src/services/logger';
 import configService from 'config';
 import APIError from '../APIError';
 import { RedirectResponse } from '../types';
 const protectedFields = configService.get().protectedFields;
-const logger = loggerService.createForContext('middlewares/respond');
+const logger = createLogger('middlewares/respond');
 
 /**
  * The Respond middleware allows us to freely write synchronous or asynchronous
