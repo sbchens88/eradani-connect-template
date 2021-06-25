@@ -153,7 +153,7 @@ export const createForContext = createLogger;
 // Attach with: app.use(require("morgan")("combined", { stream: requestLogger }));
 const _requestLogger = createLogger('api-requests');
 export const requestLogger = {
-    write: function(message: string) {
+    write: function (message: string) {
         _requestLogger.info(message);
     }
 };

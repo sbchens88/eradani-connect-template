@@ -6,4 +6,4 @@ const config = require('../config').get();
 const utils = require('./utils');
 const request = utils.request;
 
-before(function() {});
+before(function () {});

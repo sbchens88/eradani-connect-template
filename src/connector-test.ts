@@ -28,23 +28,23 @@ async function testIDB() {
 }
 
 testXML()
-    .then(result => {
+    .then((result) => {
         console.log('XML test succeeded. Result: ', JSON.stringify(result));
     })
-    .catch(err => {
+    .catch((err) => {
         console.log('XML test failed. Error: ', err.stack);
     });
 testODBC()
-    .then(result => {
+    .then((result) => {
         console.log('ODBC test succeeded. Result: ', JSON.stringify(result));
     })
-    .catch(err => {
+    .catch((err) => {
         console.log('ODBC test failed. Error: ', err.stack);
     });
 testIDB()
-    .then(result => {
+    .then((result) => {
         console.log('IDB test succeeded. Result: ', JSON.stringify(result));
     })
-    .catch(err => {
+    .catch((err) => {
         console.log('IDB test failed. Error: ', err.stack);
     });

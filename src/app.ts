@@ -11,23 +11,23 @@ const config = configService.get();
 const app = express();
 const logger = loggerService.createForContext('app');
 
-export const startup = new Promise(resolve => {
+export const startup = new Promise((resolve) => {
     resolve(setUpAPI());
 })
     .then(() => {
         return startServer();
     })
-    .catch(err => {
+    .catch((err) => {
         logger.error('ERROR ON STARTUP', err);
     })
-    .catch(err => {
+    .catch((err) => {
         console.log('ERROR ON STARTUP: ', err);
     });
 
 function startServer() {
     const server = http.createServer(app);
 
-    server.on('error', function(err: any) {
+    server.on('error', function (err: any) {
         // If the address is already in use
         if (err.code === 'EADDRINUSE') {
             logger.error(

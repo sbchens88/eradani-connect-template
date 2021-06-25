@@ -14,7 +14,7 @@ export default function decodeJWT(req: UserRequest, res: Response, next: NextFun
 
         // Decode the JWT and save its user data if it is valid.
         jwt.verify(req.headers.authorization.split(' ')[1])
-            .then(userData => {
+            .then((userData) => {
                 req.user = userData;
                 next();
             })
