@@ -1,0 +1,322 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "eradani-connect-template",
+        "version": "2.5.2",
+        "description": "Specification JSONs: [v2](/api-spec/v2), [v3](/api-spec/v3).\n\nEradani Connect Template Application"
+    },
+    "paths": {
+        "/": {
+            "get": {
+                "summary": "/",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Up and running!"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "304": {
+                        "description": ""
+                    }
+                },
+                "tags": []
+            }
+        },
+        "/api/rpg/simple-calc/{num}": {
+            "get": {
+                "summary": "/api/rpg/simple-calc/{num}",
+                "parameters": [
+                    {
+                        "name": "num",
+                        "in": "path",
+                        "required": true,
+                        "example": 5,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "input": {
+                                            "type": "number",
+                                            "example": 5
+                                        },
+                                        "output": {
+                                            "type": "number",
+                                            "example": 500
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "304": {
+                        "description": ""
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Bad Data Supplied to API"
+                                        },
+                                        "errors": {
+                                            "type": "object",
+                                            "properties": {
+                                                "num": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "value": {
+                                                            "type": "string",
+                                                            "example": "a"
+                                                        },
+                                                        "msg": {
+                                                            "type": "string",
+                                                            "example": "Invalid value"
+                                                        },
+                                                        "param": {
+                                                            "type": "string",
+                                                            "example": "num"
+                                                        },
+                                                        "location": {
+                                                            "type": "string",
+                                                            "example": "params"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unknown Error"
+                                        },
+                                        "data": {
+                                            "example": null,
+                                            "nullable": true
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": []
+            }
+        },
+        "/api/sql/customers": {
+            "get": {
+                "summary": "/api/sql/customers",
+                "parameters": [
+                    {
+                        "name": "minBaldue",
+                        "in": "query",
+                        "example": "100",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "maxBaldue",
+                        "in": "query",
+                        "example": "500",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "CUSNUM": {
+                                                "type": "number"
+                                            },
+                                            "LSTNAM": {
+                                                "type": "string"
+                                            },
+                                            "INIT": {
+                                                "type": "string"
+                                            },
+                                            "STREET": {
+                                                "type": "string"
+                                            },
+                                            "CITY": {
+                                                "type": "string"
+                                            },
+                                            "STATE": {
+                                                "type": "string"
+                                            },
+                                            "ZIPCOD": {
+                                                "type": "number"
+                                            },
+                                            "CDTLMT": {
+                                                "type": "number"
+                                            },
+                                            "CHGCOD": {
+                                                "type": "number"
+                                            },
+                                            "BALDUE": {
+                                                "type": "number"
+                                            },
+                                            "CDTDUE": {
+                                                "type": "number"
+                                            }
+                                        },
+                                        "required": [
+                                            "CUSNUM",
+                                            "LSTNAM",
+                                            "INIT",
+                                            "STREET",
+                                            "CITY",
+                                            "STATE",
+                                            "ZIPCOD",
+                                            "CDTLMT",
+                                            "CHGCOD",
+                                            "BALDUE",
+                                            "CDTDUE"
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "304": {
+                        "description": ""
+                    }
+                },
+                "tags": []
+            }
+        },
+        "/auth": {
+            "post": {
+                "summary": "/auth",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "username": {
+                                        "type": "string",
+                                        "example": "**PROTECTED FIELD**"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "******"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "token": {
+                                            "type": "string",
+                                            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzcnByZiIsImlhdCI6MTYyNDY1ODcxNiwiZXhwIjoxNjI0NjYyMzE2fQ.LC5owsV5A5Llh2oNdgYAXYecbZBHoWSvIyAZY8l7JU0"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": []
+            }
+        },
+        "/auth/verify-jwt": {
+            "post": {
+                "summary": "/auth/verify-jwt",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "valid": {
+                                            "type": "boolean",
+                                            "example": true
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                },
+                "tags": [],
+                "security": [
+                    {
+                        "authorization": []
+                    }
+                ]
+            }
+        }
+    },
+    "tags": [],
+    "servers": [
+        {
+            "url": "http://localhost:3001"
+        }
+    ],
+    "components": {
+        "securitySchemes": {
+            "authorization": {
+                "name": "authorization",
+                "in": "header",
+                "type": "apiKey"
+            }
+        }
+    }
+}

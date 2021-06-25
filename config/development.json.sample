@@ -17,6 +17,11 @@
         "maxStringifyDepth": 10
     },
 
+    "swagger": {
+        "disableDashboard": false,
+        "generate": false
+    },
+
     "eradaniConnect": {
         "xml": {
             "host": "localhost",

@@ -10,6 +10,7 @@ import expressOASGenerator, { SPEC_OUTPUT_FILE_BEHAVIOR } from 'express-oas-gene
 import swStats from 'swagger-stats';
 import swaggerUi from 'swagger-ui-express';
 import { readFile } from 'fs/promises';
+import path from 'path';
 // If you want realtime services: import socketIO from 'socket.io';
 const config = configService.get();
 const logger = createLogger('app');
@@ -30,7 +31,10 @@ async function loadSwagger() {
         if (config?.swagger?.disableDashboard) {
             return undefined;
         }
-        return JSON.parse((await readFile('../oas/spec.json')).toString());
+        return {
+            v2: JSON.parse((await readFile(path.join(__dirname, '../../oas/spec.json'))).toString()),
+            v3: JSON.parse((await readFile(path.join(__dirname, '../../oas/spec_v3.json'))).toString())
+        };
     } catch (e) {
         logger.warn('Failed to load swagger spec. Disabling swagger-dependent dashboards.', e);
         return undefined;
@@ -73,7 +77,7 @@ function startServer(app: Express.Application) {
     return { server };
 }
 
-function setUpAPI(swaggerSpec?: object) {
+function setUpAPI(swaggerSpec?: any) {
     const app = express();
 
     // General middlewares
@@ -91,8 +95,10 @@ function setUpAPI(swaggerSpec?: object) {
     app.use(cors());
 
     if (swaggerSpec && !config?.swagger?.disableDashboard) {
-        app.use(swStats.getMiddleware({ swaggerSpec, uriPath: '/dashboard/stats' }));
-        app.use('/dashboard/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, { explorer: true }));
+        app.use(swStats.getMiddleware({ swaggerSpec: swaggerSpec.v3, uriPath: '/dashboard/stats' }));
+        app.use('/dashboard/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec.v3));
+        app.use('/api-spec/v2', (_, res) => res.status(200).json(swaggerSpec.v2));
+        app.use('/api-spec/v3', (_, res) => res.status(200).json(swaggerSpec.v3));
     }
 
     app.use(
