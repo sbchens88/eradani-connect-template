@@ -1,5 +1,5 @@
 import { query } from 'express-validator';
-import { InputCheckChain } from '../../../types';
+import { InputCheckChain } from 'src/types';
 
 export const getCustomers: InputCheckChain[] = [
     query('minBaldue').exists().isNumeric().isLength({ min: 1, max: 10 }).toFloat().withMessage('minBaldue is required and is limited to 10 digits'),

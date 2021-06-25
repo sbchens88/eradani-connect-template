@@ -2,8 +2,8 @@ import * as jwt from 'src/services/jwt';
 import * as configService from 'config';
 const config = configService.get();
 const credentials = config.credentials;
-import APIError from '../APIError';
-import { JWTUserData } from '../types';
+import APIError from 'src/APIError';
+import { JWTUserData } from 'src/types';
 
 export function login(username: string, password: string) {
     return new Promise((resolve, reject) => {

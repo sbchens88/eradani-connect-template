@@ -1,5 +1,5 @@
 import createLogger from 'src/services/logger';
-import SQLTemplate, { SQLTemplateInput, SQLTemplateOutput } from '../models/sql-template';
+import SQLTemplate, { SQLTemplateInput, SQLTemplateOutput } from 'src/models/sql-template';
 import { JSONObject } from 'src/types';
 import transport from 'src/services/connection';
 

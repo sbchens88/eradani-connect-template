@@ -1,7 +1,7 @@
 import { Router } from 'express';
-import * as rpgController from '../../../controllers/rpg';
-import validate from '../../../middlewares/validate';
-import respond from '../../../middlewares/respond';
+import * as rpgController from 'src/controllers/rpg';
+import validate from 'src/middlewares/validate';
+import respond from 'src/middlewares/respond';
 import * as validators from './validators';
 
 // You can set login requirements on an API endpoint by putting `requireAuth` after the URL specification

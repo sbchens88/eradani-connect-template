@@ -1,6 +1,6 @@
 import createLogger from './logger';
-import APIError from '../APIError';
-import { JSONObject, BooleanString } from '../types';
+import APIError from 'src/APIError';
+import { JSONObject, BooleanString } from 'src/types';
 const logger = createLogger('controllers/extra-sanitizers');
 
 /**

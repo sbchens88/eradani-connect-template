@@ -1,5 +1,5 @@
 import createLogger from 'src/services/logger';
-import TEMPLATE, { TEMPLATEInput, TEMPLATEOutput } from '../models/pgm-template';
+import TEMPLATE, { TEMPLATEInput, TEMPLATEOutput } from 'src/models/pgm-template';
 import transport from 'src/services/connection';
 
 const logger = createLogger('controllers/rpg');

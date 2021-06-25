@@ -1,8 +1,8 @@
 import { validationResult } from 'express-validator';
 import createLogger from 'src/services/logger';
 import { Response, NextFunction } from 'express';
-import APIError from '../APIError';
-import { InputCheckChain } from '../types';
+import APIError from 'src/APIError';
+import { InputCheckChain } from 'src/types';
 const logger = createLogger('middlewares/validate');
 
 export default function validate(validatorArray: InputCheckChain[]) {
