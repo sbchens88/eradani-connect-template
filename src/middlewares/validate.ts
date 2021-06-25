@@ -1,4 +1,4 @@
-import { validationResult } from 'express-validator/check';
+import { validationResult } from 'express-validator';
 import createLogger from 'src/services/logger';
 import { Response, NextFunction } from 'express';
 import APIError from '../APIError';

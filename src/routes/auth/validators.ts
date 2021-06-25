@@ -1,13 +1,9 @@
-import { check } from 'express-validator/check';
-import { sanitize } from 'express-validator/filter';
+import { body } from 'express-validator';
 import configService from 'config';
 import { InputCheckChain } from '../../types';
 const regexes = configService.get().regexes;
 
 export const login: InputCheckChain[] = [
-    check('username').exists().isString(),
-    check('password').exists().isString().matches(regexes.password),
-
-    sanitize('username'),
-    sanitize('password')
+    body('username').exists().isString(),
+    body('password').exists().isString().matches(regexes.password)
 ];
