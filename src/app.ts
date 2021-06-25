@@ -4,6 +4,7 @@ import configService from 'config';
 import * as loggerService from 'src/services/logger';
 import bodyParser from 'body-parser';
 import morgan from 'morgan';
+import cors from 'cors';
 import decodeJWT from 'src/middlewares/decode-jwt';
 import routes from 'src/routes';
 // If you want realtime services: import socketIO from 'socket.io';
@@ -64,6 +65,7 @@ function setUpAPI() {
     // General middlewares
 
     app.use(morgan('dev', { stream: loggerService.requestLogger }));
+    app.use(cors());
     app.use(
         bodyParser.json({
             type: 'application/json'
