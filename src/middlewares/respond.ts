@@ -1,4 +1,4 @@
-import { Response } from 'express';
+import { Response, NextFunction } from 'express';
 import safeJSONStringify from 'safe-json-stringify';
 import createLogger from 'src/services/logger';
 import configService from 'config';
@@ -33,7 +33,7 @@ const logger = createLogger('middlewares/respond');
  * @param {Function} handler The route handler as a middleware-style arrow function
  */
 export default function respond(handler: (req: any, res: Response) => any | RedirectResponse) {
-    return (req: any, res: Response) => {
+    return (req: any, res: Response, next: NextFunction) => {
         // Store the response Promise
         let response: Promise<any>;
         try {
@@ -116,7 +116,8 @@ export default function respond(handler: (req: any, res: Response) => any | Redi
                     }
                 });
                 res.status(500).json({ message: 'Unknown Error' });
-            });
+            })
+            .finally(next);
     };
 }
 

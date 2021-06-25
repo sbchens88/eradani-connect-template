@@ -6,25 +6,38 @@ import bodyParser from 'body-parser';
 import morgan from 'morgan';
 import cors from 'cors';
 import routes from 'src/routes';
+import expressOASGenerator, { SPEC_OUTPUT_FILE_BEHAVIOR } from 'express-oas-generator';
+import swStats from 'swagger-stats';
+import swaggerUi from 'swagger-ui-express';
+import { readFile } from 'fs/promises';
 // If you want realtime services: import socketIO from 'socket.io';
 const config = configService.get();
-const app = express();
 const logger = createLogger('app');
+const generateSwagger = config?.swagger?.generate || process.env.GENERATE_SWAGGER === 'true';
 
-export const startup = new Promise((resolve) => {
-    resolve(setUpAPI());
-})
-    .then(() => {
-        return startServer();
-    })
-    .catch((err) => {
+export const startup = loadSwagger()
+    .then(setUpAPI)
+    .then(startServer)
+    .catch((err: any) => {
         logger.error('ERROR ON STARTUP', err);
     })
-    .catch((err) => {
+    .catch((err: any) => {
         console.log('ERROR ON STARTUP: ', err);
     });
 
-function startServer() {
+async function loadSwagger() {
+    try {
+        if (config?.swagger?.disableDashboard) {
+            return undefined;
+        }
+        return JSON.parse((await readFile('../oas/spec.json')).toString());
+    } catch (e) {
+        logger.warn('Failed to load swagger spec. Disabling swagger-dependent dashboards.', e);
+        return undefined;
+    }
+}
+
+function startServer(app: Express.Application) {
     const server = http.createServer(app);
 
     server.on('error', function (err: any) {
@@ -60,11 +73,28 @@ function startServer() {
     return { server };
 }
 
-function setUpAPI() {
+function setUpAPI(swaggerSpec?: object) {
+    const app = express();
+
     // General middlewares
+
+    if (generateSwagger) {
+        expressOASGenerator.handleResponses(app, {
+            specOutputPath: './oas/spec.json',
+            alwaysServeDocs: false,
+            specOutputFileBehavior: SPEC_OUTPUT_FILE_BEHAVIOR.PRESERVE,
+            swaggerDocumentOptions: {}
+        });
+    }
 
     app.use(morgan('dev', { stream: requestLogger }));
     app.use(cors());
+
+    if (swaggerSpec && !config?.swagger?.disableDashboard) {
+        app.use(swStats.getMiddleware({ swaggerSpec, uriPath: '/dashboard/stats' }));
+        app.use('/dashboard/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, { explorer: true }));
+    }
+
     app.use(
         bodyParser.json({
             type: 'application/json'
@@ -80,4 +110,10 @@ function setUpAPI() {
     const router = express.Router();
     routes(router);
     app.use('/', router);
+
+    if (generateSwagger) {
+        expressOASGenerator.handleRequests();
+    }
+
+    return app;
 }
