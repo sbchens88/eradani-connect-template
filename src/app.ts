@@ -5,7 +5,6 @@ import * as loggerService from 'src/services/logger';
 import bodyParser from 'body-parser';
 import morgan from 'morgan';
 import cors from 'cors';
-import decodeJWT from 'src/middlewares/decode-jwt';
 import routes from 'src/routes';
 // If you want realtime services: import socketIO from 'socket.io';
 const config = configService.get();
@@ -76,7 +75,6 @@ function setUpAPI() {
             extended: false
         })
     );
-    app.use(decodeJWT);
 
     // Mount routes
     const router = express.Router();

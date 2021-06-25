@@ -1,23 +1,28 @@
-import { Response, NextFunction } from 'express';
 import * as loggerService from '../services/logger';
-import APIError from '../APIError';
-import { UserRequest } from '../types';
+import passport from 'passport';
+import { Strategy as BearerStrategy } from 'passport-http-bearer';
 const logger = loggerService.createForContext('middlewares/require-auth');
+import * as jwt from '../services/jwt';
 
-export default function requireAuth(req: UserRequest, res: Response, next: NextFunction) {
-    try {
-        // `req.user` is set by decode-jwt middleware if a valid jwt is present
-        if (req.user && req.user.username) {
-            return next();
-        } else {
-            throw new APIError(401, 'Bad Authorization Token');
+passport.use(
+    new BearerStrategy(async function (token, done) {
+        try {
+            let userData = await jwt.verify(token);
+            logger.debug('JWT Validation Succeeded', userData);
+            return done(null, userData, { scope: 'all' });
+        } catch (e) {
+            logger.verbose('JWT Validation Failed', e);
+            return done(null, false);
         }
-    } catch (err) {
-        if (err && err.status === 401) {
-            logger.debug('Unauthenticated user attempted to access API', err);
-        } else {
-            logger.error('Error checking auth token', err);
+    })
+);
+
+export default function callback(req: any, res: any, next: any) {
+    passport.authenticate('bearer', function (err, user, _info) {
+        logger.debug('Bearer authentication callback', { err, user, info: _info });
+        if (err || !user) {
+            return res.status(401).json({ message: 'Authentication Failed' });
         }
-        return res.status(401).json({ message: 'Bad Authorization Token' });
-    }
+        return next();
+    })(req, res, next);
 }
