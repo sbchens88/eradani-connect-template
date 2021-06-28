@@ -1,11 +1,11 @@
-import { Response } from 'express';
+import { Response, NextFunction } from 'express';
 import safeJSONStringify from 'safe-json-stringify';
-import * as loggerService from '../services/logger';
-import configService from '../../config';
-import APIError from '../APIError';
-import { RedirectResponse } from '../types';
+import createLogger from 'src/services/logger';
+import configService from 'config';
+import APIError from 'src/APIError';
+import { RedirectResponse } from 'src/types';
 const protectedFields = configService.get().protectedFields;
-const logger = loggerService.createForContext('middlewares/respond');
+const logger = createLogger('middlewares/respond');
 
 /**
  * The Respond middleware allows us to freely write synchronous or asynchronous
@@ -33,7 +33,7 @@ const logger = loggerService.createForContext('middlewares/respond');
  * @param {Function} handler The route handler as a middleware-style arrow function
  */
 export default function respond(handler: (req: any, res: Response) => any | RedirectResponse) {
-    return (req: any, res: Response) => {
+    return (req: any, res: Response, next: NextFunction) => {
         // Store the response Promise
         let response: Promise<any>;
         try {
@@ -65,7 +65,7 @@ export default function respond(handler: (req: any, res: Response) => any | Redi
                     res.status(200).json(result);
                 }
             })
-            .catch(error => {
+            .catch((error) => {
                 _filterProtectedFields(req);
                 if (error.status === 500) {
                     logger.error(error.message, {
@@ -101,7 +101,7 @@ export default function respond(handler: (req: any, res: Response) => any | Redi
                     data: error.additionalData ? error.additionalData.send : null
                 });
             })
-            .catch(error => {
+            .catch((error) => {
                 logger.error(error.message || 'Unknown Error', {
                     status: error.status || error.statusCode || 500,
                     additionalData: {
@@ -116,7 +116,8 @@ export default function respond(handler: (req: any, res: Response) => any | Redi
                     }
                 });
                 res.status(500).json({ message: 'Unknown Error' });
-            });
+            })
+            .finally(next);
     };
 }
 

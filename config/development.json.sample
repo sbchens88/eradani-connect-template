@@ -9,12 +9,22 @@
         "expiresIn": "1h"
     },
 
+    "credentials": {
+        "username": "usrprf",
+        "password": "password"
+    },
+
     "protectedFields": ["password", "username"],
 
     "logger": {
         "maxLoggingLevel": "silly",
         "disableConsole": false,
         "maxStringifyDepth": 10
+    },
+
+    "swagger": {
+        "disableDashboard": false,
+        "generate": false
     },
 
     "eradaniConnect": {
