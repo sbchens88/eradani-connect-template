@@ -7,7 +7,7 @@
         "start": "node dist/src/app.js",
         "start:debug": "node --inspect dist/src/app.js",
         "test": "npx mocha ./dist/tests",
-        "setup": "npm run install-shx && npm run link-keys && npm run reset-git && npm run create-user && npm run create-objects && npm run install-deps && npm install && npm run generate-config && npm run package:release && npm run update-eol && npm run set-permissions",
+        "setup": "npm run install-shx && npm install && npm run generate-config && npm run package:release && npm run update-eol",
         "clean": "shx rm -rf dist",
         "docs": "shx echo $OSTYPE | shx grep os400 || (npx typedoc --out docs src && printf \"\u001b[1;36mView Generated Documentation with \u001b[1;32mnpm run view-docs\u001b[0m\")",
         "install-shx": "npm install -g shx && npx shx ln -s /QOpenSys/pkgs/lib/nodejs14/bin/shx /QOpenSys/pkgs/bin/shx || echo \"Failed to install shx\"",
