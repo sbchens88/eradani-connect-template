@@ -47,7 +47,7 @@
         },
         "credentials": {
             "username": "ECNCT",
-            "password": "password"
+            "password": "ecnctpassword"
         },
         "native": {
             "templateLib": "ECNCTAPP",
