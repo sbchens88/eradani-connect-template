@@ -1,20 +1,9 @@
-import configService from '../../config';
-const config = configService.get();
-import eradaniConnect from '@eradani-inc/eradani-connect';
-import * as loggerService from '../services/logger';
-import SQLTemplate, { SQLTemplateInput, SQLTemplateOutput } from '../models/sql-template';
+import createLogger from 'src/services/logger';
+import SQLTemplate, { SQLTemplateInput, SQLTemplateOutput } from 'src/models/sql-template';
 import { JSONObject } from 'src/types';
+import transport from 'src/services/connection';
 
-const credentials = config.eradaniConnect.credentials;
-const logger = loggerService.createForContext('controllers/sql');
-
-// Const transport = new eradaniConnect.transports.Odbc(config.eradaniConnect.odbc);
-const transport = new eradaniConnect.transports.Xml(
-    '*LOCAL',
-    credentials.username,
-    credentials.password,
-    config.eradaniConnect.xml
-);
+const logger = createLogger('controllers/sql');
 
 /**
  * Run the Template SQL query.

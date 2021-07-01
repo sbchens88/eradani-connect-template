@@ -42,7 +42,7 @@ import winston from 'winston';
 import DailyRotateFile from 'winston-daily-rotate-file';
 import path from 'path';
 import safeJSONStringify from 'safe-json-stringify';
-import configService from '../../config';
+import configService from 'config';
 const config = configService.get();
 
 function _stringify(data: any, depth: number = 0): string {
@@ -50,17 +50,35 @@ function _stringify(data: any, depth: number = 0): string {
         if (depth > (config.logger.maxStringifyDepth || 10)) {
             return '' + data;
         }
-        if (data instanceof Error) {
-            return `${data.stack} ${
-                (data as any).additionalData
-                    ? _stringify((data as any).additionalData, depth + 1)
-                    : (data as any).context
-                    ? _stringify((data as any).context, depth + 1)
-                    : ''
-            }`;
+
+        let obj = data;
+        if (data && typeof data === 'object') {
+            obj = Object.assign({}, data);
+
+            if (data.stack) {
+                obj.stack = data.stack;
+            }
+            if (data.message) {
+                obj.message = data.message;
+            }
+            if (data.additionalData) {
+                obj.additionalData = _stringify(data.additionalData, depth + 1);
+            }
+            if (data.context) {
+                obj.context = _stringify(data.context, depth + 1);
+            }
+            if (data.fullError) {
+                obj.fullError = _stringify(data.fullError, depth + 1);
+            }
         } else {
-            return safeJSONStringify(data);
+            return obj;
         }
+
+        if (depth !== 0) {
+            return obj;
+        }
+
+        return safeJSONStringify(obj);
     } catch (e) {
         return '' + data;
     }
@@ -135,7 +153,7 @@ export const createForContext = createLogger;
 // Attach with: app.use(require("morgan")("combined", { stream: requestLogger }));
 const _requestLogger = createLogger('api-requests');
 export const requestLogger = {
-    write: function(message: string) {
+    write: function (message: string) {
         _requestLogger.info(message);
     }
 };

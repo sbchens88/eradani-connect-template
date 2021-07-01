@@ -1,7 +1,7 @@
 import express, { Router } from 'express';
 import mountAPI from './api';
 import mountAuth from './auth';
-import respond from '../middlewares/respond';
+import respond from 'src/middlewares/respond';
 
 export default function addRoutes(router: Router) {
     const api = express.Router();

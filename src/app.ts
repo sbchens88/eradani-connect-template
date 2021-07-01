@@ -1,33 +1,50 @@
 import http from 'http';
 import express from 'express';
-import configService from '../config';
-import * as loggerService from './services/logger';
+import configService from 'config';
+import createLogger, { requestLogger } from 'src/services/logger';
 import bodyParser from 'body-parser';
 import morgan from 'morgan';
-import decodeJWT from './middlewares/decode-jwt';
-import routes from './routes';
+import cors from 'cors';
+import routes from 'src/routes';
+import expressOASGenerator, { SPEC_OUTPUT_FILE_BEHAVIOR } from 'express-oas-generator';
+import swStats from 'swagger-stats';
+import swaggerUi from 'swagger-ui-express';
+import { readFile } from 'fs/promises';
+import path from 'path';
 // If you want realtime services: import socketIO from 'socket.io';
 const config = configService.get();
-const app = express();
-const logger = loggerService.createForContext('app');
+const logger = createLogger('app');
+const generateSwagger = config?.swagger?.generate || process.env.GENERATE_SWAGGER === 'true';
 
-export const startup = new Promise(resolve => {
-    resolve(setUpAPI());
-})
-    .then(() => {
-        return startServer();
-    })
-    .catch(err => {
+export const startup = loadSwagger()
+    .then(setUpAPI)
+    .then(startServer)
+    .catch((err: any) => {
         logger.error('ERROR ON STARTUP', err);
     })
-    .catch(err => {
+    .catch((err: any) => {
         console.log('ERROR ON STARTUP: ', err);
     });
 
-function startServer() {
+async function loadSwagger() {
+    try {
+        if (config?.swagger?.disableDashboard) {
+            return undefined;
+        }
+        return {
+            v2: JSON.parse((await readFile(path.join(__dirname, '../../oas/spec.json'))).toString()),
+            v3: JSON.parse((await readFile(path.join(__dirname, '../../oas/spec_v3.json'))).toString())
+        };
+    } catch (e) {
+        logger.warn('Failed to load swagger spec. Disabling swagger-dependent dashboards.', e);
+        return undefined;
+    }
+}
+
+function startServer(app: Express.Application) {
     const server = http.createServer(app);
 
-    server.on('error', function(err: any) {
+    server.on('error', function (err: any) {
         // If the address is already in use
         if (err.code === 'EADDRINUSE') {
             logger.error(
@@ -60,10 +77,30 @@ function startServer() {
     return { server };
 }
 
-function setUpAPI() {
+function setUpAPI(swaggerSpec?: any) {
+    const app = express();
+
     // General middlewares
 
-    app.use(morgan('dev', { stream: loggerService.requestLogger }));
+    if (generateSwagger) {
+        expressOASGenerator.handleResponses(app, {
+            specOutputPath: './oas/spec.json',
+            alwaysServeDocs: false,
+            specOutputFileBehavior: SPEC_OUTPUT_FILE_BEHAVIOR.PRESERVE,
+            swaggerDocumentOptions: {}
+        });
+    }
+
+    app.use(morgan('dev', { stream: requestLogger }));
+    app.use(cors());
+
+    if (swaggerSpec && !config?.swagger?.disableDashboard) {
+        app.use(swStats.getMiddleware({ swaggerSpec: swaggerSpec.v3, uriPath: '/dashboard/stats' }));
+        app.use('/dashboard/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec.v3));
+        app.use('/api-spec/v2', (_, res) => res.status(200).json(swaggerSpec.v2));
+        app.use('/api-spec/v3', (_, res) => res.status(200).json(swaggerSpec.v3));
+    }
+
     app.use(
         bodyParser.json({
             type: 'application/json'
@@ -74,10 +111,15 @@ function setUpAPI() {
             extended: false
         })
     );
-    app.use(decodeJWT);
 
     // Mount routes
     const router = express.Router();
     routes(router);
     app.use('/', router);
+
+    if (generateSwagger) {
+        expressOASGenerator.handleRequests();
+    }
+
+    return app;
 }

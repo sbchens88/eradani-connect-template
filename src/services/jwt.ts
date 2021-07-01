@@ -1,12 +1,12 @@
 import jwt from 'jsonwebtoken';
 import { promisify } from 'es6-promisify';
-import config from '../../config';
-import APIError from '../APIError';
-import { JWTUserData } from '../types';
+import config from 'config';
+import APIError from 'src/APIError';
+import { JWTUserData } from 'src/types';
 const key = config.getKeys().privateKey;
 const options = config.get().jwt;
-const jwtSign = promisify(jwt.sign);
-const jwtVerify = promisify(jwt.verify);
+const jwtSign = promisify(jwt.sign) as (data: any, key: string, options?: any) => Promise<string>;
+const jwtVerify = promisify(jwt.verify) as (token: string, key: string) => Promise<any>;
 
 /**
  * Generates a secure JSON Web Token to control access to the API. Any data
