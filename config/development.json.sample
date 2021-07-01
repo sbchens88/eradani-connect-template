@@ -9,11 +9,6 @@
         "expiresIn": "1h"
     },
 
-    "credentials": {
-        "username": "usrprf",
-        "password": "password"
-    },
-
     "protectedFields": ["password", "username"],
 
     "logger": {
