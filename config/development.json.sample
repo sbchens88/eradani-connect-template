@@ -55,6 +55,20 @@
         }
     },
 
+    "okta": {
+        "use": false,
+        "domain": "",
+        "client_id": "",
+        "client_secret": "",
+        "appBaseUrl": "",
+        "scope": "",
+        "routes": {
+            "login": {
+                "path": "/auth/login"
+            }
+        }
+    },
+
     "defaults": {
         
     }

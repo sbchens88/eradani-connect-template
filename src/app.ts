@@ -11,6 +11,8 @@ import swStats from 'swagger-stats';
 import swaggerUi from 'swagger-ui-express';
 import { readFile } from 'fs/promises';
 import path from 'path';
+import session from 'express-session';
+import { oidc } from './middlewares/okta-oidc';
 // If you want realtime services: import socketIO from 'socket.io';
 const config = configService.get();
 const logger = createLogger('app');
@@ -71,8 +73,19 @@ function startServer(app: Express.Application) {
         }
     });
 
-    server.listen(process.env.PORT || config.app.port);
-    logger.info(`Server listening on port ${process.env.PORT || config.app.port}`);
+    oidc.on('ready', () => {
+        serverListen(server);
+    });
+    
+    oidc.on('error', (err: Error) => {
+        if(config.okta.use) {
+            logger.info(`Error initializing ExpressOIDC Client : ${err.message}`);
+            process.exit(0);
+        } else {
+            serverListen(server);
+        }
+    })
+
 
     return { server };
 }
@@ -112,6 +125,14 @@ function setUpAPI(swaggerSpec?: any) {
         })
     );
 
+    app.use(session({
+        secret: 'this-should-be-very-random',
+        resave: true,
+        saveUninitialized: false
+    }));
+
+    app.use(oidc.router);
+    
     // Mount routes
     const router = express.Router();
     routes(router);
@@ -122,4 +143,9 @@ function setUpAPI(swaggerSpec?: any) {
     }
 
     return app;
+}
+
+function serverListen(server: http.Server) {
+    server.listen(process.env.PORT || config.app.port);
+    logger.info(`Server listening on port ${process.env.PORT || config.app.port}`);
 }
