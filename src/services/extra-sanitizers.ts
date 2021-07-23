@@ -10,7 +10,7 @@ const logger = createLogger('controllers/extra-sanitizers');
  * @param requestData Input data from the API call
  * @throws {APIError<400>} If input is invalid or sanitization fails for any reason
  */
-export async function sanitizeZoneRequest(requestData: JSONObject): Promise<BooleanString> {
+export async function sanitize(requestData: JSONObject): Promise<BooleanString> {
     try {
         if (requestData.valid) {
             return 'Y';
