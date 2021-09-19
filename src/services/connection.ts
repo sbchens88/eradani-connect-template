@@ -9,6 +9,12 @@ const transport = new eradaniConnect.transports.Odbc(config.eradaniConnect.odbc,
     logger
 });
 
+
+process.on('SIGINT', async function() {
+    logger.debug('closing application');
+    setTimeout(() => process.kill(process.pid, 'SIGKILL'), 3000);
+ });
+
 /* Disabled XML Transport
 const credentials = config.eradaniConnect.credentials;
 const transport = new eradaniConnect.transports.Xml(
