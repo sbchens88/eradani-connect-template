@@ -18,7 +18,7 @@
 
     "logger": {
         "maxLoggingLevel": "silly",
-        "disableConsole": false,
+        "disableConsole": true,
         "maxStringifyDepth": 10
     },
 
